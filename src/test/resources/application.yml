@@ -1,0 +1,19 @@
+spring:
+# 12FA: Caching for long running services, defaults to none
+  cache:
+    type: none
+#    cache-names:
+# 12FA: Eureka - Registry   : Defau
+# 12FA: Logging        
+logging:
+  level:
+    org.springframework: info
+# 12FAE: Security & management related    
+management:
+  endpoints:
+    web:
+      exposure:
+        include: heapdump,loggers,threaddump,info,metrics,health 
+  info:
+    git:
+      mode: full

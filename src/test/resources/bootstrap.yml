@@ -1,0 +1,7 @@
+spring:
+  application:
+    name: demo-service
+  #Only for local build uncomment below lines.
+  cloud:
+    config:
+      uri: http://localhost:8888

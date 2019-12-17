@@ -1,0 +1,162 @@
+swagger: "2.0"
+info:
+  description: "This is demo service."
+  version: "1.0.0"
+  title: "UserApi"
+  termsOfService: "http://swagger.io/terms/"
+  contact:
+    email: "spark_h_zhang@manulife.com"
+  license:
+    name: "Apache 2.0"
+    url: "http://www.apache.org/licenses/LICENSE-2.0.html"
+host: "demo"
+basePath: "/v1"
+tags:
+  - name: "User"
+    description: "user functions"
+schemes:
+  - "https"
+  - "http"
+paths:
+  /user:
+    post:
+      tags:
+        - "User"
+      summary: "Add new users"
+      description: ""
+      operationId: "addUser"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "users"
+          description: "user information"
+          required: true
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+      responses:
+        200:
+          description: "Add user suceess"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+        405:
+          description: "Invalid input"
+#      security:
+#        - user_auth:
+#            - "write:user"
+#            - "read:user"
+    put:
+      tags:
+        - "User"
+      summary: "Update existing users"
+      description: ""
+      operationId: "updateUser"
+      consumes:
+        - "application/json"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "users"
+          description: "update user"
+          required: true
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+      responses:
+        200:
+          description: "Update users suceess"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "User not found"
+        405:
+          description: "Validation exception"
+#      security:
+#        - user_auth:
+#            - "write:user"
+#            - "read:user"
+
+  /user/{id}:
+    get:
+      tags:
+        - "User"
+      summary: "Find user by ID"
+      description: "Returns a single user"
+      operationId: "getUserById"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "user to return"
+          required: true
+          type: "string"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "User not found"
+    delete:
+      tags:
+        - "User"
+      summary: "Deletes a user"
+      description: ""
+      operationId: "deleteUser"
+      produces:
+        - "application/json"
+      parameters:
+        - name: "id"
+          in: "path"
+          description: "delete user"
+          required: true
+          type: "string"
+      responses:
+        400:
+          description: "Invalid ID supplied"
+        404:
+          description: "user not found"
+#      security:
+#        - user_auth:
+#            - "write:user"
+#            - "read:user"
+#securityDefinitions:
+#  user_auth:
+#    type: "oauth2"
+#    authorizationUrl: "http://user.swagger.io/oauth/dialog"
+#    flow: "implicit"
+#    scopes:
+#      write:user: "modify user in your account"
+#      read:user: "read your user"
+#  api_key:
+#    type: "apiKey"
+#    name: "api_key"
+#    in: "header"
+definitions:
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "string"
+      name:
+        type: "string"
+      email:
+        type: "string"
+externalDocs:
+  description: "Find out more about Swagger"
+  url: "http://swagger.io"

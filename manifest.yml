@@ -1,0 +1,18 @@
+---
+applications:
+- name: demo-service-dev
+  memory: 1G
+  instances: 1
+  host: demo-service-dev
+  domain: apps.eas.pcf.manulife.com
+  path: target/demo-service-1.0-SNAPSHOT.jar
+  services:
+    - registry-service
+    - config-service
+    - cb-dashboard-service
+# Uncomment if needed and redeploy
+#    - newrelic-service
+#    - scale-service
+  env:
+    spring.profiles.active: dev, cloud
+    NEW_RELIC_APP_NAME: demo-service-dev    

@@ -1,0 +1,20 @@
+spring:
+  application:
+    name: demo-service
+  profiles: local
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: create
+      dialect: org.hibernate.dialect.SQLServer2008Dialect
+  datasource:
+    driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver
+#    url: jdbc:sqlserver://106.12.32.161:1433;database=TestDB
+    url: jdbc:sqlserver://10.248.39.187:1433;database=TestDB
+    username: SA
+    password: Spark321
+  jackson:
+    serialization:
+      FAIL_ON_EMPTY_BEANS: false
+
+

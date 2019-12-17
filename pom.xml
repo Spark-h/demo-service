@@ -1,0 +1,211 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.manulife.ap</groupId>
+	<artifactId>demo-service</artifactId>
+	<version>1.0-SNAPSHOT</version>
+	<packaging>jar</packaging>
+	<name>demo-service micro-service</name>
+	<url>https://mfc.sharepoint.com/sites/asiatemp/asiadigital/DE/Microservices/Home.aspx</url>
+	<description>Customize your project based on generated template file</description>
+
+	<!-- Source control : Need to change according to your github project -->
+	<!-- <scm> <url>https://git.ap.manulife.com/msl</url> <connection>scm:git:https://git.ap.manulife.com/msl/demo-service.git</connection> 
+		<developerConnection>scm:git:https://git.ap.manulife.com/msl/demo-service.git</developerConnection> 
+		<tag>HEAD</tag> </scm> -->
+
+	<!-- Properties -->
+	<properties>
+		<swagger.service.package>com.manulife.ap</swagger.service.package>
+		<team.name></team.name>
+		<team.your.name></team.your.name>
+		<team.your.email></team.your.email>
+		<team.url></team.url>
+		<team.email></team.email>
+		<team.zone></team.zone>
+	</properties>
+
+	<!-- Organization: Add your organization details here -->
+	<organization>
+		<name>${team.name}</name>
+		<url>${team.url}</url>
+	</organization>
+
+	<!-- Developers: Change to your team name, id and emails. etc... -->
+	<developers>
+		<developer>
+			<id>your-name-id</id>
+			<name>${team.your.name}</name>
+			<email>${team.your.email}</email>
+			<roles>
+				<role>developer</role>
+			</roles>
+			<timezone>${team.zone}</timezone>
+		</developer>
+	</developers>
+	<!-- Contributors -->
+	<contributors>
+		<contributor>
+			<name>${team.your.name}-id</name>
+			<email>${team.your.email}</email>
+			<url>${project.url}</url>
+			<roles>
+				<role>architect</role>
+				<role>developer</role>
+			</roles>
+			<timezone>${team.zone}</timezone>
+		</contributor>
+	</contributors>
+
+	<!-- Identifies parent RSF pom -->
+	<parent>
+		<groupId>com.manulife.ap</groupId>
+		<artifactId>rsf-parent</artifactId>
+		<version>0.0.3</version>
+		<relativePath />
+	</parent>
+
+	<!-- Project dependencies -->
+	<dependencies>
+		<!-- RSF CORE -->
+		<dependency>
+			<groupId>com.manulife.ap</groupId>
+			<artifactId>rsf-core</artifactId>
+			<version>0.0.3</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>com.microsoft.sqlserver</groupId>
+			<artifactId>mssql-jdbc</artifactId>
+			<scope>runtime</scope>
+			<version>6.4.0.jre8</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+		</dependency>
+
+		<!-- jacoco dependency -->
+		<dependency>
+			<groupId>org.jacoco</groupId>
+			<artifactId>jacoco-maven-plugin</artifactId>
+			<version>0.7.8</version>
+		</dependency>
+	</dependencies>
+
+	<!-- Build plugins -->
+	<build>
+		<plugins>
+			<!-- Swagger -->
+			<plugin>
+				<groupId>io.swagger</groupId>
+				<artifactId>swagger-codegen-maven-plugin</artifactId>
+				<version>${swagger-codegen-maven-plugin.version}</version>
+				<executions>
+					<execution>
+						<id>common</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<language>spring</language>
+<!--							<basePackage>${swagger.service.package}.swagger</basePackage>-->
+							<apiPackage>${swagger.service.package}.api</apiPackage>
+<!--							<configPackage>${swagger.service.package}.swagger.config</configPackage>-->
+							<modelPackage>${swagger.service.package}.model</modelPackage>
+<!--							<delegatePackage>${swagger.service.package}.swagger.delegate</delegatePackage>-->
+							<inputSpec>${project.basedir}/src/main/resources/swagger/swagger-input.yml</inputSpec>
+							<output>${project.basedir}</output>
+							<templateDirectory>${project.basedir}/src/main/resources/swagger/templates</templateDirectory>
+							<ignoreFileOverride>${project.basedir}/.swagger-codegen-ignore</ignoreFileOverride>
+							<skipOverwrite>false</skipOverwrite>
+							<withXml>true</withXml>
+							<configOptions>
+								<serializableModel>true</serializableModel>
+								<delegatePattern>true</delegatePattern>
+								<useBeanValidation>true</useBeanValidation>
+								<hideGenerationTimestamp>true</hideGenerationTimestamp>
+								<dateLibrary>joda</dateLibrary>
+							</configOptions>
+						</configuration>
+					</execution>
+					<execution>
+						<id>perftest</id>
+						<goals>
+							<goal>generate</goal>
+						</goals>
+						<configuration>
+							<language>jmeter</language>
+							<inputSpec>${project.basedir}/src/main/resources/swagger/swagger-input.yml</inputSpec>
+							<output>${project.basedir}/src/test/resources/jmeter</output>
+							<ignoreFileOverride>${project.basedir}/.swagger-codegen-ignore</ignoreFileOverride>
+							<skipOverwrite>true</skipOverwrite>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>0.8.1</version>
+
+				<configuration>
+					<includes>
+						<include>**/api/**Controller**</include>
+						<include>**/delegate/**</include>
+						<include>**/service/**</include>
+					</includes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>prepare-agent</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>report</id>
+						<phase>prepare-package</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>post-unit-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
+	<!-- Profiles -->
+	<profiles>
+		<profile>
+			<id>dev</id>
+			<properties>
+				<activatedProperties>dev</activatedProperties>
+				<!-- Add your Sonar authentication key. If not needed keep line commented -->
+				<!-- Use authentication key. -->
+				<!-- <sonar.login></sonar.login> -->
+				<!-- Provide link to your documentation page for project. -->
+				<sonar.host.url>https://sonar.ap.manulife.com/</sonar.host.url>
+				<sonar.links.homepage>${project.url}</sonar.links.homepage>
+				<sonar.language>java</sonar.language>
+				<sonar.links.scm>${project.scm.url}</sonar.links.scm>
+			</properties>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+		</profile>
+	</profiles>
+</project>

@@ -1,0 +1,18 @@
+---
+applications:
+- name: demo-service-uat
+  memory: 1G
+  instances: 1
+  host: demo-service-uat
+  domain: apps.eas.pcf.manulife.com
+  path: target/demo-service-1.0-SNAPSHOT.jar
+  services:
+    - registry-service
+    - config-service
+    - cb-dashboard-service
+# Uncomment if needed and redeploy. Review memory requirement
+#    - newrelic-service
+#    - scale-service
+  env:
+    spring.profiles.active: uat, cloud 
+    NEW_RELIC_APP_NAME: demo-service-uat       
